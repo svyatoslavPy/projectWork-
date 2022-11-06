@@ -1,0 +1,135 @@
+@import 'mixin/mixin';
+
+
+
+.input__wrapper {
+	display: flex;
+	column-gap: 75px;
+	.input {
+		@include flex(flex, false, column, center);
+		margin-top: 120px;
+
+		@media (max-width: 375px) {
+			margin-left: 9px;
+		}
+
+		&__text {
+			@include flex(flex, center, false, center);
+			@include font-graphil(18px, #252525, 500, false);
+			width: 200px;
+			height: 33px;
+			border: 1px solid rgba(37, 37, 37, 0.16);
+			border-radius: 5px;
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+
+		&__text--special {
+			@include font-graphil(32px, #252525, 600, 100%);
+			letter-spacing: -0.01em;
+			margin-top: 29px;
+		}
+
+		&__text--secondary {
+			margin-top: 32px;
+			margin-bottom: 18px;
+			@include font-graphil(18px, #70788b, 400, 130%);
+			border: 5px solid #ffffff;
+
+			&::before {
+				display: block;
+				content: '';
+				background: linear-gradient(
+					270deg,
+					#ffffff 0.11%,
+					#70788b 47.67%,
+					#ffffff 99.36%
+				);
+				width: 10%;
+				height: 1px;
+				position: absolute;
+				top: 265px;
+				margin-left: calc(-9.5% - 10px);
+			}
+
+			&::after {
+				content: '';
+				background: linear-gradient(
+					270deg,
+					#ffffff 0.11%,
+					#70788b 47.67%,
+					#ffffff 99.36%
+				);
+				width: 10%;
+				height: 1px;
+				position: absolute;
+				top: 265px;
+				margin-left: 5px;
+			}
+		}
+
+		.btn {
+			@include flex(flex, center, false, center);
+			@include font-graphil(18px, #ffffff, 600, false);
+			column-gap: 12px;
+			margin-bottom: 12px;
+			width: 472px;
+			height: 44px;
+			border-radius: 8px;
+
+			@media (max-width: 375px) {
+				width: 311px;
+				height: 44px;
+			}
+
+			&:hover {
+				cursor: pointer;
+			}
+
+			&__primary {
+				background: #3d94f8;
+			}
+
+			&__special {
+				background: #5865f2;
+			}
+
+			&__secondary {
+				background: #0ea0e9;
+			}
+
+			&__icon {
+				padding-top: 2px;
+			}
+
+			&__prime {
+				margin-left: 8px;
+			}
+
+			&__spec {
+				margin-left: 4px;
+			}
+		}
+
+		.input__logo {
+			@include flex(flex, false, false, center);
+			column-gap: 12px;
+			margin-top: 240px;
+			padding-bottom: 50px;
+
+		}
+	}
+
+	.input__picture {
+		@media (max-width: 375px) {
+			display: none;
+		}
+		img {
+			position: absolute;
+			bottom: 0;
+			// top: 0;
+		}
+	}
+}

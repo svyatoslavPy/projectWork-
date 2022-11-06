@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style.css">
+
+	<title>Document</title>
+</head>
+
+
+<style>
+	.slider {
+		max-width: 100%;
+		position: relative;
+		margin: auto;
+		height: 300px;
+		margin-bottom: 15px;
+	}
+
+	@media (max-width: 375px) {
+
+		.slider {
+			max-width: 100%;
+			position: relative;
+			margin: auto;
+			height: 140px;
+			margin-bottom: 15px;
+		}
+	}
+
+
+	.slider .item img {
+		object-fit: cover;
+		width: 100%;
+		height: 300px;
+		border: none !important;
+		box-shadow: none !important;
+	}
+
+
+	@media (max-width: 375px) {
+		.slider .item img {
+			object-fit: cover;
+			width: 335px;
+			height: 150px;
+			border-radius: 12px;
+			border: none !important;
+			box-shadow: none !important;
+		}
+	}
+
+	.slider .prev,
+	.slider .next {
+		cursor: pointer;
+		position: absolute;
+		top: 0;
+		top: 50%;
+		width: auto;
+		margin-top: -22px;
+		padding: 16px;
+		color: white;
+		font-weight: bold;
+		display: none;
+		font-size: 18px;
+		transition: 0.6s ease;
+		border-radius: 0 3px 3px 0;
+	}
+
+	.slider .next {
+		right: 0;
+		border-radius: 3px 0 0 3px;
+	}
+
+	.slider .prev:hover,
+	.slider .next:hover {
+		background-color: rgba(0, 0, 0, 0.8);
+	}
+
+	.slideText {
+		position: absolute;
+		color: #fff;
+		font-size: 35px;
+		/* Выравнивание текста по горизонтали и по вертикали*/
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		/* Тень*/
+		text-shadow: 1px 1px 1px #000, 0 0 1em #000;
+	}
+
+	.slider-dots {
+		position: absolute;
+		top: 360px;
+		left: 727px;
+		text-align: center;
+	}
+
+	@media (max-width: 375px) {
+		.slider-dots {
+			position: absolute;
+			top: 220px;
+			left: 162px;
+			text-align: center;
+		}
+	}
+
+	.slider-dots_item {
+		cursor: pointer;
+		height: 12px;
+		width: 12px;
+		margin: 0 2px;
+		background-color: #ddd;
+		border-radius: 50%;
+		display: inline-block;
+		transition: background-color 0.6s ease;
+	}
+
+	.active,
+	.slider-dots_item:hover {
+		background-color: #aaa;
+	}
+
+	/* Анимация слайдов */
+	.slider .item {
+		-webkit-animation-name: fade;
+		-webkit-animation-duration: 3s;
+		animation-name: fade;
+		animation-duration: 2s;
+	}
+
+	@-webkit-keyframes fade {
+		from {
+			opacity: .9;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes fade {
+		from {
+			opacity: .9;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+</style>
+
+<body>
+
+	<header class="header">
+		<div class="container">
+			<div class="nav nav--special">
+				<div class="nav__logo">
+					<p>
+						Логотип блогера
+					</p>
+				</div>
+				<div class="nav__link nav__link--special">
+					<div class="nav__icon">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" clip-rule="evenodd" id="iconPath"
+								d="M10 4C9.44772 4 9 3.55228 9 3V1C9 0.447715 9.44771 0 10 0C10.5523 0 11 0.447715 11 1V3C11 3.55228 10.5523 4 10 4ZM10 20C9.44772 20 9 19.5523 9 19V17C9 16.4477 9.44771 16 10 16C10.5523 16 11 16.4477 11 17V19C11 19.5523 10.5523 20 10 20ZM3 11C3.55228 11 4 10.5523 4 10C4 9.44771 3.55228 9 3 9H1C0.447715 9 0 9.44772 0 10C0 10.5523 0.447715 11 1 11H3ZM20 10C20 10.5523 19.5523 11 19 11H17C16.4477 11 16 10.5523 16 10C16 9.44772 16.4477 9 17 9H19C19.5523 9 20 9.44771 20 10ZM14.2421 4.34313C13.8516 4.73365 13.8516 5.36681 14.2421 5.75734C14.6326 6.14786 15.2658 6.14786 15.6563 5.75734L17.0705 4.34312C17.4611 3.9526 17.4611 3.31944 17.0705 2.92891C16.68 2.53839 16.0469 2.53839 15.6563 2.92891L14.2421 4.34313ZM2.92961 17.0711C2.53909 16.6805 2.53909 16.0474 2.92961 15.6568L4.34383 14.2426C4.73435 13.8521 5.36751 13.8521 5.75804 14.2426C6.14856 14.6332 6.14856 15.2663 5.75804 15.6568L4.34383 17.0711C3.9533 17.4616 3.32014 17.4616 2.92961 17.0711ZM15.6563 14.2428C15.2658 13.8523 14.6326 13.8523 14.2421 14.2428C13.8516 14.6333 13.8516 15.2665 14.2421 15.657L15.6563 17.0712C16.0469 17.4617 16.68 17.4617 17.0705 17.0712C17.4611 16.6807 17.4611 16.0475 17.0705 15.657L15.6563 14.2428ZM2.92961 2.92906C3.32014 2.53854 3.9533 2.53854 4.34383 2.92906L5.75804 4.34328C6.14856 4.7338 6.14856 5.36697 5.75804 5.75749C5.36752 6.14801 4.73435 6.14801 4.34383 5.75749L2.92961 4.34328C2.53909 3.95275 2.53909 3.31959 2.92961 2.92906ZM6 10C6 12.2091 7.79086 14 10 14C12.2091 14 14 12.2091 14 10C14 7.79086 12.2091 6 10 6C7.79086 6 6 7.79086 6 10ZM8 10C8 8.89543 8.89543 8 10 8C11.1046 8 12 8.89543 12 10C12 11.1046 11.1046 12 10 12C8.89543 12 8 11.1046 8 10Z"
+								fill="black" />
+						</svg>
+					</div>
+					<p class="nav__text">
+						<a href="#one">
+							Товары
+						</a>
+					</p>
+					<p class="nav__text">
+						<a href="#two">
+							Статистика
+						</a>
+					</p>
+					<div class="btn__wrapper">
+						<div class="btn">
+							<a href="authorization.html">
+								Войти в аккаунт
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<main class="main">
+		<div class="container">
+			<div class="slider">
+				<div class="item">
+					<img src="images/bg-main.svg" alt="bg">
+				</div>
+				<div class="item">
+					<img src="images/bg-main.svg" alt="bg">
+				</div>
+				<div class="item">
+					<img src="images/bg-main.svg" alt="bg">
+				</div>
+				<a class="prev" onclick="minusSlide()">&#10094;</a>
+				<a class="next" onclick="plusSlide()">&#10095;</a>
+			</div>
+			<div class="slider-dots">
+				<span class="slider-dots_item" onclick="currentSlide(1)"></span>
+				<span class="slider-dots_item" onclick="currentSlide(2)"></span>
+				<span class="slider-dots_item" onclick="currentSlide(3)"></span>
+			</div>
+			<div class="category-card__title" id="one">
+				<p>
+					Категории
+				</p>
+			</div>
+			<div class="card-product__wrapper">
+				<div class="card-product">
+					<div class="card-product__items">
+						<svg width="45" height="42" viewBox="0 0 45 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect x="0.267578" width="42" height="42" rx="7" fill="#0077FF" />
+							<path
+								d="M30.3161 13.4929C28.7862 12.8029 27.1464 12.2929 25.4315 12.0029C25.4162 12 25.4004 12.0019 25.3862 12.0084C25.3721 12.0148 25.3603 12.0255 25.3525 12.0389C25.1425 12.4079 24.9085 12.8889 24.7445 13.2689C22.9257 12.9971 21.0767 12.9971 19.2579 13.2689C19.0752 12.8478 18.8692 12.4371 18.6409 12.0389C18.6332 12.0253 18.6215 12.0144 18.6074 12.0076C18.5932 12.0008 18.5774 11.9985 18.5619 12.001C16.848 12.2909 15.2081 12.8009 13.6772 13.4919C13.6641 13.4974 13.6529 13.5068 13.6452 13.5189C10.5334 18.0935 9.6805 22.5553 10.0995 26.961C10.1006 26.9718 10.104 26.9822 10.1093 26.9917C10.1146 27.0011 10.1218 27.0094 10.1305 27.016C11.9467 28.3383 13.9726 29.3456 16.1231 29.9958C16.1381 30.0004 16.1541 30.0004 16.1691 29.9957C16.1841 29.9911 16.1973 29.982 16.2071 29.9698C16.6698 29.3509 17.0799 28.6943 17.433 28.0069C17.4379 27.9975 17.4407 27.9872 17.4413 27.9766C17.4418 27.966 17.4401 27.9554 17.4362 27.9455C17.4323 27.9357 17.4264 27.9268 17.4187 27.9194C17.4111 27.9121 17.402 27.9064 17.392 27.9029C16.746 27.6596 16.1202 27.3661 15.5201 27.025C15.5093 27.0188 15.5003 27.0101 15.4937 26.9995C15.4871 26.989 15.4832 26.977 15.4825 26.9646C15.4817 26.9522 15.484 26.9398 15.4891 26.9286C15.4943 26.9173 15.5022 26.9074 15.5121 26.9C15.6381 26.807 15.7641 26.71 15.8841 26.613C15.8949 26.6043 15.9079 26.5987 15.9217 26.5969C15.9354 26.5952 15.9494 26.5973 15.9621 26.603C19.8888 28.3669 24.1416 28.3669 28.0223 26.603C28.035 26.5969 28.0491 26.5946 28.0631 26.5962C28.0771 26.5978 28.0903 26.6032 28.1013 26.612C28.2213 26.71 28.3463 26.807 28.4733 26.9C28.4833 26.9073 28.4913 26.917 28.4966 26.9282C28.502 26.9394 28.5045 26.9517 28.5039 26.9641C28.5033 26.9765 28.4996 26.9885 28.4932 26.9991C28.4868 27.0098 28.4779 27.0186 28.4673 27.025C27.8693 27.3689 27.2473 27.6599 26.5944 27.9019C26.5844 27.9055 26.5752 27.9113 26.5676 27.9187C26.56 27.9262 26.554 27.9352 26.5501 27.9451C26.5462 27.9551 26.5445 27.9657 26.5451 27.9764C26.5457 27.987 26.5485 27.9974 26.5534 28.0069C26.9134 28.6939 27.3253 29.3478 27.7783 29.9688C27.7877 29.9815 27.8008 29.991 27.8159 29.996C27.8309 30.0011 27.8471 30.0013 27.8623 29.9968C30.0165 29.3484 32.0456 28.3407 33.8639 27.016C33.8728 27.0098 33.8802 27.0017 33.8857 26.9924C33.8913 26.9831 33.8947 26.9727 33.8959 26.962C34.3959 21.8683 33.058 17.4426 30.3471 13.5209C30.3405 13.5081 30.3295 13.4982 30.3161 13.4929ZM18.02 24.2781C16.838 24.2781 15.8631 23.2092 15.8631 21.8983C15.8631 20.5864 16.819 19.5185 18.02 19.5185C19.2299 19.5185 20.1958 20.5954 20.1768 21.8983C20.1768 23.2102 19.2209 24.2781 18.02 24.2781ZM25.9944 24.2781C24.8115 24.2781 23.8376 23.2092 23.8376 21.8983C23.8376 20.5864 24.7925 19.5185 25.9944 19.5185C27.2044 19.5185 28.1703 20.5954 28.1513 21.8983C28.1513 23.2102 27.2054 24.2781 25.9944 24.2781Z"
+								fill="white" />
+						</svg>
+						<p class="card-product__text">
+							Discord Nitro
+						</p>
+					</div>
+				</div>
+				<div class="card-product">
+					<div class="card-product__items">
+						<svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect width="42" height="42" rx="7" fill="#0077FF" />
+							<path
+								d="M20.3492 11V12.0526V16.2632V23.1484C19.7063 22.777 18.9763 22.5806 18.2328 22.5789C17.1102 22.5789 16.0336 23.0226 15.2398 23.8122C14.446 24.6018 14 25.6728 14 26.7895C14 27.9062 14.446 28.9771 15.2398 29.7668C16.0336 30.5564 17.1102 31 18.2328 31C19.3554 31 20.432 30.5564 21.2258 29.7668C22.0197 28.9771 22.4656 27.9062 22.4656 26.7895V16.2632H28.8148V11H20.3492Z"
+								fill="white" />
+						</svg>
+
+						<p class="card-product__text">
+							Музыка
+						</p>
+					</div>
+				</div>
+				<div class="card-product">
+					<div class="card-product__items">
+						<p>
+							<svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<rect width="42" height="42" rx="7" fill="#0077FF" />
+								<path fill-rule="evenodd" clip-rule="evenodd"
+									d="M20.6522 10.2912C20.512 10.448 19.9034 11.8974 19.2999 13.5122C18.4904 15.6782 18.1305 16.5027 17.9275 16.6565C17.7024 16.827 17.1499 16.8992 14.8883 17.0538C13.368 17.1577 11.982 17.3013 11.8085 17.373C11.3067 17.58 11.0236 18.3664 11.2389 18.9554C11.2794 19.0665 11.9482 19.7113 12.725 20.3883C14.162 21.6407 14.7551 21.9665 15.614 21.9752C15.8043 21.9771 17.3653 21.7009 19.0827 21.3612C21.689 20.8457 22.2348 20.7692 22.3828 20.8983C22.5978 21.0856 22.6132 21.4227 22.4148 21.5955C22.3348 21.6653 20.9946 22.3892 19.4368 23.204C15.7704 25.1218 15.8221 25.0625 15.0635 28.2259C14.5693 30.2864 14.5629 30.5336 14.9924 30.9846C15.5837 31.6055 15.7976 31.527 18.5631 29.6723C20.3572 28.4691 21.1294 28.0145 21.3752 28.0169C21.614 28.0192 22.4472 28.5088 24.1962 29.6745C25.8841 30.7995 26.7813 31.3292 26.9999 31.3299C27.3717 31.331 28.0882 30.6577 28.0895 30.3061C28.0899 30.1856 27.7759 28.6878 27.3918 26.9778C26.7452 24.0998 26.7052 23.8434 26.8551 23.529C26.9441 23.3423 27.9561 22.3179 29.1041 21.2525C30.2521 20.1872 31.2532 19.2334 31.3287 19.1331C31.4043 19.0328 31.4679 18.7217 31.4698 18.4419C31.4725 18.0586 31.4061 17.8623 31.201 17.6469C30.8538 17.2823 30.8313 17.278 28.1451 17.0563C25.169 16.8107 24.9305 16.7711 24.6519 16.4756C24.5224 16.3383 23.9445 14.9464 23.3677 13.3826C22.6555 11.4518 22.2289 10.4537 22.0385 10.2727C21.6481 9.90176 20.9928 9.91053 20.6522 10.2912Z"
+									fill="white" />
+							</svg>
+
+						</p>
+						<p class="card-product__text">
+							Telegram
+						</p>
+					</div>
+				</div>
+				<div class="card-product">
+					<div class="card-product__items">
+						<p>
+							<img src="images/copy.svg" alt="">
+						</p>
+						<p class="card-product__text">
+							Все товары
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="category-card__title">
+				<p>
+					Все товары
+				</p>
+			</div>
+			<div class="card-social__wrapper">
+				<a href="./products.html" class="card-social">
+					<div class="card-social__items">
+						<div class="btn-price__wrapper">
+							<div class="btn-price">
+								<p>
+									Выгодная цена
+								</p>
+							</div>
+						</div>
+						<div class="card-social__picture">
+							<p>
+								<img src="images/spotify-icon.svg" alt="">
+							</p>
+						</div>
+					</div>
+					<div class="info-card__wrapper">
+						<div class="info-card">
+							<p class="info-card__text">
+								Spotify premium
+							</p>
+							<p class="info-card__text--special">
+								3 месяца
+							</p>
+						</div>
+						<div class="info-price__wrapper">
+							<div class="info-price">
+								<p>
+									350₽
+								</p>
+							</div>
+						</div>
+					</div>
+				</a>
+				<a href="./products.html" class="card-social">
+					<div class="card-social__items">
+						<div class="card-social__picture card-social__picture--special">
+							<p>
+								<img src="images/discord-card.svg" alt="">
+							</p>
+						</div>
+					</div>
+					<div class="info-card__wrapper">
+						<div class="info-card">
+							<p class="info-card__text">
+								Discord Nitro
+							</p>
+							<p class="info-card__text--special">
+								12 месяцев
+							</p>
+						</div>
+						<div class="info-price__wrapper">
+							<div class="info-price">
+								<p>
+									350₽
+								</p>
+							</div>
+						</div>
+					</div>
+				</a>
+				<a href="./products.html" class="card-social">
+					<div class="card-social__items">
+						<div class="btn-price__wrapper">
+							<div class="btn-price--special">
+								<p>
+									Хит
+								</p>
+							</div>
+						</div>
+						<div class="card-social__picture">
+							<p>
+								<img src="images/telegram-card.svg" alt="">
+							</p>
+						</div>
+					</div>
+					<div class="info-card__wrapper">
+						<div class="info-card">
+							<p class="info-card__text">
+								Telegram premium
+							</p>
+							<p class="info-card__text--special">
+								3 месяца
+							</p>
+						</div>
+						<div class="info-price__wrapper">
+							<p class="info-price--special">
+								550₽
+							</p>
+							<p class="info-price">
+								350₽
+							</p>
+						</div>
+					</div>
+				</a>
+				<a href="./products.html" class="card-social">
+					<div class="card-social__items">
+						<div class="card-social__picture card-social__picture--special">
+							<p>
+								<img src="images/spotify-icon.svg" alt="">
+							</p>
+						</div>
+					</div>
+					<div class="info-card__wrapper">
+						<div class="info-card">
+							<p class="info-card__text">
+								Spotify premium
+							</p>
+							<p class="info-card__text--special">
+								6 месяцев
+							</p>
+						</div>
+						<div class="info-price__wrapper">
+							<div class="info-price">
+								<p>
+									350₽
+								</p>
+							</div>
+						</div>
+					</div>
+				</a>
+				<a href="./products.html" class="card-social">
+					<div class="card-social__items">
+						<div class="btn-price__wrapper">
+							<div class="btn-price">
+								<p>
+									Выгодная цена
+								</p>
+							</div>
+						</div>
+						<div class="card-social__picture">
+							<p>
+								<img src="images/telegram-card.svg" alt="">
+							</p>
+						</div>
+					</div>
+					<div class="info-card__wrapper">
+						<div class="info-card">
+							<p class="info-card__text">
+								Telegram premium
+							</p>
+							<p class="info-card__text--special">
+								3 месяца
+							</p>
+						</div>
+						<div class="info-price__wrapper">
+							<p class="info-price--special">
+								550₽
+							</p>
+							<p class="info-price">
+								350₽
+							</p>
+						</div>
+					</div>
+				</a>
+				<a href="./products.html" class="card-social">
+					<div class="card-social__items">
+						<div class="card-social__picture card-social__picture--special">
+							<p>
+								<img src="images/spotify-icon.svg" alt="">
+							</p>
+						</div>
+					</div>
+					<div class="info-card__wrapper">
+						<div class="info-card">
+							<p class="info-card__text">
+								Spotify premium
+							</p>
+							<p class="info-card__text--special">
+								3 месяца
+							</p>
+						</div>
+						<div class="info-price__wrapper">
+							<div class="info-price">
+								<p>
+									350₽
+								</p>
+							</div>
+						</div>
+					</div>
+				</a>
+				<a href="./products.html" class="card-social">
+					<div class="card-social__items">
+						<div class="btn-price__wrapper">
+							<div class="btn-price">
+								<p>
+									Выгодная цена
+								</p>
+							</div>
+						</div>
+						<div class="card-social__picture">
+							<p>
+								<img src="images/discord-card.svg" alt="">
+							</p>
+						</div>
+					</div>
+					<div class="info-card__wrapper">
+						<div class="info-card">
+							<p class="info-card__text">
+								Discord Nitro
+							</p>
+							<p class="info-card__text--special">
+								3 месяца
+							</p>
+						</div>
+						<div class="info-price__wrapper">
+							<div class="info-price">
+								<p>
+									350₽
+								</p>
+							</div>
+						</div>
+					</div>
+				</a>
+				<a href="./products.html" class="card-social">
+					<div class="card-social__items">
+						<div class="card-social__picture card-social__picture--special">
+							<p>
+								<img src="images/telegram-card.svg" alt="">
+							</p>
+						</div>
+					</div>
+					<div class="info-card__wrapper">
+						<div class="info-card">
+							<p class="info-card__text">
+								Telegram premium
+							</p>
+							<p class="info-card__text--special">
+								3 месяца
+							</p>
+						</div>
+						<div class="info-price__wrapper">
+							<p class="info-price--special">
+								550₽
+							</p>
+							<p class="info-price">
+								350₽
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="card__line"></div>
+			<div class="category-card__title">
+				<p>
+					Статистика
+				</p>
+			</div>
+			<div class="about-statistics__wrapper">
+				<div class="about-statistics">
+					<div class="about__picture">
+						<p>
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<rect width="64" height="64" rx="12" fill="#F8F8F8" />
+								<path fill-rule="evenodd" clip-rule="evenodd"
+									d="M20.0003 20C19.2639 20 18.667 20.597 18.667 21.3333C18.667 22.0697 19.2639 22.6667 20.0003 22.6667V21.3333L20.0003 22.6667H20.0004H20.0006H20.0008H20.001H20.0012H20.0015H20.0029H20.0048H20.006H20.0066H20.0073H20.0104H20.014H20.0149H20.0159H20.0181H20.0693H20.2607H20.917H21.6027L24.7001 36.2955C24.8599 36.9982 25.5474 37.444 26.2497 37.3098C26.3309 37.3253 26.4147 37.3333 26.5003 37.3333H40.0003C40.5561 37.3333 41.0536 36.9886 41.2488 36.4682L45.2488 25.8015C45.4023 25.392 45.3453 24.9333 45.0962 24.5739C44.8471 24.2144 44.4376 24 44.0003 24H24.6404L23.9672 21.0378C23.8292 20.4308 23.2895 20 22.667 20H20.917H20.2607H20.0693H20.0612H20.0535H20.0517H20.0499H20.0464H20.0397H20.0279H20.0265H20.0252H20.0239H20.0227H20.0215H20.0203H20.0181H20.0104H20.0073H20.0066H20.006H20.0048H20.0015H20.001H20.0008H20.0006H20.0004H20.0003L20.0003 21.3333V20ZM25.2464 26.6667L27.0646 34.6667H39.0763L42.0763 26.6667H25.2464ZM29.3337 38.6667C27.8609 38.6667 26.667 39.8606 26.667 41.3333C26.667 42.8061 27.8609 44 29.3337 44C30.8064 44 32.0003 42.8061 32.0003 41.3333C32.0003 39.8606 30.8064 38.6667 29.3337 38.6667ZM34.667 41.3333C34.667 39.8606 35.8609 38.6667 37.3337 38.6667C38.8064 38.6667 40.0003 39.8606 40.0003 41.3333C40.0003 42.8061 38.8064 44 37.3337 44C35.8609 44 34.667 42.8061 34.667 41.3333Z"
+									fill="#252525" />
+							</svg>
+
+						</p>
+					</div>
+					<div class="about-statistics__items">
+						<p class="about-statistics__text">
+							524
+						</p>
+						<p class="about-statistics__text--primary">
+							Покупки сегодня
+						</p>
+					</div>
+				</div>
+				<div class="about-statistics">
+					<div class="about__picture">
+						<p>
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<rect width="64" height="64" rx="12" fill="#F8F8F8" />
+								<path fill-rule="evenodd" clip-rule="evenodd"
+									d="M32 29C30.3431 29 29 27.6569 29 26C29 24.3431 30.3431 23 32 23C33.6569 23 35 24.3431 35 26C35 27.6569 33.6569 29 32 29ZM36.1997 30.2852C37.3107 29.1962 38 27.6786 38 26C38 22.6863 35.3137 20 32 20C28.6863 20 26 22.6863 26 26C26 27.6786 26.6893 29.1962 27.8003 30.2852C25.8089 31.6335 24.5 33.9139 24.5 36.5V42.5C24.5 43.3284 25.1716 44 26 44C26.8284 44 27.5 43.3284 27.5 42.5V36.5C27.5 34.0147 29.5147 32 32 32C34.4853 32 36.5 34.0147 36.5 36.5V42.5C36.5 43.3284 37.1716 44 38 44C38.8284 44 39.5 43.3284 39.5 42.5V36.5C39.5 33.9139 38.1911 31.6335 36.1997 30.2852Z"
+									fill="#252525" />
+							</svg>
+
+						</p>
+					</div>
+					<div class="about-statistics__items">
+						<p class="about-statistics__text">
+							1 245
+						</p>
+						<p class="about-statistics__text--primary">
+							Посетителей за сегодня
+						</p>
+					</div>
+				</div>
+				<div class="about-statistics">
+					<div class="about__picture">
+						<p>
+							<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<rect width="64" height="64" rx="12" fill="#F8F8F8" />
+								<path fill-rule="evenodd" clip-rule="evenodd"
+									d="M32 32C29.5147 32 27.5 34.0147 27.5 36.5V38.2143V42.5C27.5 43.3284 26.8284 44 26 44C25.1716 44 24.5 43.3284 24.5 42.5V38.2143V36.5L24.5002 36.4468C24.2552 36.4819 24.0047 36.5 23.75 36.5C23.5849 36.5 23.4216 36.4924 23.2604 36.4775C23.1758 36.4923 23.0888 36.5 23 36.5H22.3571C21.0553 36.5 20 37.5553 20 38.8571V41C20 41.8284 19.3284 42.5 18.5 42.5C17.6716 42.5 17 41.8284 17 41V38.8571C17 36.9506 17.9959 35.2767 19.4959 34.3273C18.8694 33.4626 18.5 32.3994 18.5 31.25C18.5 28.3505 20.8505 26 23.75 26C24.5638 26 25.3344 26.1852 26.0218 26.5157C26.0074 26.3457 26 26.1737 26 26C26 22.6863 28.6863 20 32 20C35.3137 20 38 22.6863 38 26C38 26.1737 37.9926 26.3457 37.9782 26.5157C38.6656 26.1852 39.4362 26 40.25 26C43.1495 26 45.5 28.3505 45.5 31.25C45.5 32.3994 45.1306 33.4626 44.5041 34.3273C46.0041 35.2767 47 36.9506 47 38.8571V41C47 41.8284 46.3284 42.5 45.5 42.5C44.6716 42.5 44 41.8284 44 41V38.8571C44 37.5553 42.9447 36.5 41.6429 36.5H41C40.9112 36.5 40.8242 36.4923 40.7396 36.4775C40.5784 36.4924 40.4151 36.5 40.25 36.5C39.9953 36.5 39.7448 36.4819 39.4998 36.4468L39.5 36.5V38.2143V42.5C39.5 43.3284 38.8284 44 38 44C37.1716 44 36.5 43.3284 36.5 42.5V38.2143V36.5C36.5 34.0147 34.4853 32 32 32ZM32 29C30.3431 29 29 27.6569 29 26C29 24.3431 30.3431 23 32 23C33.6569 23 35 24.3431 35 26C35 27.6569 33.6569 29 32 29ZM23.75 29C22.5074 29 21.5 30.0074 21.5 31.25C21.5 32.4926 22.5074 33.5 23.75 33.5C24.9926 33.5 26 32.4926 26 31.25C26 30.0074 24.9926 29 23.75 29ZM40.25 29C39.0074 29 38 30.0074 38 31.25C38 32.4926 39.0074 33.5 40.25 33.5C41.4926 33.5 42.5 32.4926 42.5 31.25C42.5 30.0074 41.4926 29 40.25 29Z"
+									fill="#252525" />
+							</svg>
+						</p>
+					</div>
+					<div class="about-statistics__items">
+						<p class="about-statistics__text">
+							48 314
+						</p>
+						<p class="about-statistics__text--primary">
+							Посетителей за месяц
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<footer class="footer" id="two">
+		<div class="container">
+			<div class="footer__inner">
+				<div class="footer__company">
+					<p class="footer__text">
+						Разработано командой Lite Shop
+					</p>
+					<p>
+						<img src="images/live-shop.svg" alt="live-shop">
+					</p>
+				</div>
+				<div class="footer-icon">
+					<p class="footer-icon__text">
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g clip-path="url(#clip0_1_187)">
+								<path
+									d="M20.317 4.49197C18.787 3.80197 17.147 3.29197 15.432 3.00197C15.4167 2.99904 15.4009 3.00093 15.3868 3.00738C15.3726 3.01383 15.3608 3.02452 15.353 3.03797C15.143 3.40697 14.909 3.88797 14.745 4.26797C12.9261 3.99621 11.0769 3.99621 9.25799 4.26797C9.07533 3.84683 8.86934 3.4362 8.64099 3.03797C8.63325 3.02436 8.62154 3.01342 8.60743 3.00663C8.59331 2.99984 8.57746 2.99752 8.56199 2.99997C6.84799 3.28997 5.20799 3.79997 3.67699 4.49097C3.66382 4.4965 3.65265 4.50592 3.64499 4.51797C0.532992 9.09297 -0.320008 13.555 0.0989923 17.961C0.100158 17.9718 0.103508 17.9822 0.108837 17.9917C0.114167 18.0011 0.121364 18.0094 0.129992 18.016C1.94638 19.3384 3.97233 20.3458 6.12299 20.996C6.13798 21.0006 6.15402 21.0006 6.16901 20.9959C6.18399 20.9913 6.19723 20.9823 6.20699 20.97C6.66979 20.351 7.07989 19.6944 7.43299 19.007C7.43789 18.9976 7.44072 18.9872 7.44127 18.9766C7.44183 18.9661 7.44011 18.9555 7.43622 18.9456C7.43233 18.9358 7.42637 18.9268 7.41874 18.9195C7.41111 18.9121 7.40199 18.9065 7.39199 18.903C6.746 18.6597 6.12008 18.3661 5.51999 18.025C5.50921 18.0188 5.50012 18.0101 5.49355 17.9995C5.48698 17.989 5.48312 17.977 5.48233 17.9646C5.48153 17.9522 5.48383 17.9398 5.48901 17.9286C5.49418 17.9173 5.50208 17.9075 5.51199 17.9C5.63799 17.807 5.76399 17.71 5.88399 17.613C5.89479 17.6043 5.9078 17.5987 5.92158 17.5969C5.93535 17.5952 5.94934 17.5973 5.96199 17.603C9.88899 19.367 14.142 19.367 18.023 17.603C18.0357 17.5969 18.0498 17.5946 18.0638 17.5961C18.0778 17.5977 18.091 17.6032 18.102 17.612C18.222 17.71 18.347 17.807 18.474 17.9C18.484 17.9073 18.492 17.917 18.4974 17.9282C18.5027 17.9394 18.5052 17.9517 18.5046 17.9641C18.504 17.9765 18.5004 17.9885 18.494 17.9991C18.4876 18.0098 18.4787 18.0186 18.468 18.025C17.87 18.369 17.248 18.66 16.595 18.902C16.585 18.9056 16.5758 18.9114 16.5682 18.9188C16.5606 18.9263 16.5546 18.9353 16.5507 18.9452C16.5468 18.9551 16.5451 18.9658 16.5457 18.9764C16.5463 18.9871 16.5491 18.9975 16.554 19.007C16.914 19.694 17.326 20.348 17.779 20.969C17.7884 20.9817 17.8015 20.9912 17.8166 20.9963C17.8316 21.0013 17.8478 21.0015 17.863 20.997C20.0173 20.3486 22.0466 19.3407 23.865 18.016C23.8739 18.0098 23.8813 18.0017 23.8868 17.9924C23.8923 17.9831 23.8958 17.9727 23.897 17.962C24.397 12.868 23.059 8.44197 20.348 4.51997C20.3413 4.50723 20.3303 4.49729 20.317 4.49197ZM8.01999 15.278C6.83799 15.278 5.86299 14.209 5.86299 12.898C5.86299 11.586 6.81899 10.518 8.01999 10.518C9.22999 10.518 10.196 11.595 10.177 12.898C10.177 14.21 9.22099 15.278 8.01999 15.278V15.278ZM15.995 15.278C14.812 15.278 13.838 14.209 13.838 12.898C13.838 11.586 14.793 10.518 15.995 10.518C17.205 10.518 18.171 11.595 18.152 12.898C18.152 14.21 17.206 15.278 15.995 15.278V15.278Z"
+									fill="#252525" fill-opacity="0.2" />
+							</g>
+							<defs>
+								<clipPath id="clip0_1_187">
+									<rect width="24" height="24" fill="white" />
+								</clipPath>
+							</defs>
+						</svg>
+					</p>
+					<p class="footer-icon__text">
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g clip-path="url(#clip0_1_189)">
+								<path
+									d="M23.5001 6.50708C23.3642 6.02231 23.0995 5.58342 22.7341 5.23708C22.3584 4.88008 21.8979 4.62471 21.3961 4.49508C19.5181 4.00008 11.9941 4.00008 11.9941 4.00008C8.85746 3.96439 5.72156 4.12135 2.60413 4.47008C2.10232 4.60929 1.64269 4.87036 1.26613 5.23008C0.896129 5.58608 0.628129 6.02508 0.488129 6.50608C0.151822 8.31782 -0.0115791 10.1574 0.000128902 12.0001C-0.0118711 13.8411 0.151129 15.6801 0.488129 17.4941C0.625129 17.9731 0.892129 18.4101 1.26313 18.7631C1.63413 19.1161 2.09613 19.3711 2.60413 19.5061C4.50713 20.0001 11.9941 20.0001 11.9941 20.0001C15.1348 20.0358 18.2747 19.8789 21.3961 19.5301C21.8979 19.4004 22.3584 19.1451 22.7341 18.7881C23.0994 18.4418 23.3638 18.0029 23.4991 17.5181C23.8442 15.707 24.012 13.8667 24.0001 12.0231C24.0261 10.1717 23.8585 8.32264 23.5001 6.50608V6.50708ZM9.60213 15.4241V8.57708L15.8621 12.0011L9.60213 15.4241Z"
+									fill="#252525" fill-opacity="0.2" />
+							</g>
+							<defs>
+								<clipPath id="clip0_1_189">
+									<rect width="24" height="24" fill="white" />
+								</clipPath>
+							</defs>
+						</svg>
+					</p>
+					<p class="footer-icon__text">
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g clip-path="url(#clip0_1_193)">
+								<path fill-rule="evenodd" clip-rule="evenodd"
+									d="M23.45 5.948C23.616 5.402 23.45 5 22.655 5H20.03C19.362 5 19.054 5.347 18.887 5.73C18.887 5.73 17.552 8.926 15.661 11.002C15.049 11.604 14.771 11.795 14.437 11.795C14.27 11.795 14.019 11.604 14.019 11.057V5.948C14.019 5.292 13.835 5 13.279 5H9.151C8.734 5 8.483 5.304 8.483 5.593C8.483 6.214 9.429 6.358 9.526 8.106V11.904C9.526 12.737 9.373 12.888 9.039 12.888C8.149 12.888 5.984 9.677 4.699 6.003C4.45 5.288 4.198 5 3.527 5H0.9C0.15 5 0 5.347 0 5.73C0 6.412 0.89 9.8 4.145 14.281C6.315 17.341 9.37 19 12.153 19C13.822 19 14.028 18.632 14.028 17.997V15.684C14.028 14.947 14.186 14.8 14.715 14.8C15.105 14.8 15.772 14.992 17.33 16.467C19.11 18.216 19.403 19 20.405 19H23.03C23.78 19 24.156 18.632 23.94 17.904C23.702 17.18 22.852 16.129 21.725 14.882C21.113 14.172 20.195 13.407 19.916 13.024C19.527 12.533 19.638 12.314 19.916 11.877C19.916 11.877 23.116 7.451 23.449 5.948H23.45Z"
+									fill="#252525" fill-opacity="0.2" />
+							</g>
+							<defs>
+								<clipPath id="clip0_1_193">
+									<rect width="24" height="24" fill="white" />
+								</clipPath>
+							</defs>
+						</svg>
+					</p>
+					<p class="footer-icon__text">
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path
+								d="M20.6651 3.71682L2.93509 10.5538C1.72509 11.0398 1.73209 11.7148 2.71309 12.0158L7.26509 13.4358L17.7971 6.79082C18.2951 6.48782 18.7501 6.65082 18.3761 6.98282L9.8431 14.6838H9.84109L9.8431 14.6848L9.5291 19.3768C9.9891 19.3768 10.1921 19.1658 10.4501 18.9168L12.6611 16.7668L17.2601 20.1638C18.1081 20.6308 18.7171 20.3908 18.9281 19.3788L21.9471 5.15082C22.2561 3.91182 21.4741 3.35082 20.6651 3.71682Z"
+								fill="#252525" fill-opacity="0.2" />
+						</svg>
+					</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<script>
+		var linkNav = document.querySelectorAll('[href^="#"]'),
+			V = 1;
+		for (var i = 0; i < linkNav.length; i++) {
+			linkNav[i].addEventListener('click', function (e) {
+				e.preventDefault();
+				var w = window.pageYOffset,
+					hash = this.href.replace(/[^#]*(.*)/, '$1');
+				t = document.querySelector(hash).getBoundingClientRect().top,
+					start = null;
+				requestAnimationFrame(step);
+				function step(time) {
+					if (start === null) start = time;
+					var progress = time - start,
+						r = (t < 0 ? Math.max(w - progress / V, w + t) : Math.min(w + progress / V, w + t));
+					window.scrollTo(0, r);
+					if (r != w + t) {
+						requestAnimationFrame(step)
+					} else {
+						location.hash = hash
+					}
+				}
+			}, false);
+		}
+	</script>
+
+	<script>
+
+		var slideIndex = 1;
+		showSlides(slideIndex);
+
+		function plusSlide() {
+			showSlides(slideIndex += 1);
+		}
+
+		function minusSlide() {
+			showSlides(slideIndex -= 1);
+		}
+
+		function currentSlide(n) {
+			showSlides(slideIndex = n);
+		}
+
+		function showSlides(n) {
+			let i;
+			let slides = document.getElementsByClassName("item");
+			let dots = document.getElementsByClassName("slider-dots_item");
+			if (n > slides.length) {
+				slideIndex = 1
+			}
+			if (n < 1) {
+				slideIndex = slides.length
+			}
+			for (i = 0; i < slides.length; i++) {
+				slides[i].style.display = "none";
+			}
+			for (i = 0; i < dots.length; i++) {
+				dots[i].className = dots[i].className.replace(" active", "");
+			}
+			slides[slideIndex - 1].style.display = "block";
+			dots[slideIndex - 1].className += " active";
+		}
+		const autoplayInterval = setInterval(function () {
+			document.querySelector(".next").click();
+		}, 3500);
+
+	</script>
+	<script src="js/main.js"></script>
+
+
+</body>
+
+</html>
