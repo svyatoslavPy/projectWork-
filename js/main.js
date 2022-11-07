@@ -8,6 +8,7 @@ if (localStorage.getItem('theme') === 'dark') {
 	document.body.classList.add('dark-theme')
 }
 
+
 btn.addEventListener('click', () => {
 	if (theme === 'light') {
 		theme = 'dark'
@@ -16,9 +17,12 @@ btn.addEventListener('click', () => {
 	}
 	localStorage.setItem('theme', theme)
 	document.body.classList.toggle('dark-theme')
+	
 })
 
+
 theme = localStorage.getItem('theme')
+
 
 
 
